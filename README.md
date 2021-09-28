@@ -68,4 +68,8 @@ You should see the following files in the `data/` folder:
 -   trc1-complex.csv
 -   trc1-formatted.csv
 
+Examples of each file can be found along with the initial commit release:
+
+[Release: initial-commit](https://github.com/Terrabits/rohdeschwarz_s21_example/releases/tag/initial-commit)
+
 The output can be cleaned by running either `scripts/clean[.bat]`.

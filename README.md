@@ -34,6 +34,8 @@ Run `scripts/install[.bat]` to install the required python packages.
 
 ## Run
 
+The entry point for execution is [__main__.py](./__main__.py).
+
 ### Configure Instrument Address
 
 Before `__main__.py` can be run, you must first edit `VNA_IP_ADDRESS` or `VNA_GPIB_ADDRESS` to match your current configuration:

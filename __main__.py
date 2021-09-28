@@ -3,7 +3,7 @@ from rohdeschwarz.instruments.vna import Vna
 
 
 # constants
-VNA_IP_ADDRESS   = '192.168.86.199'
+VNA_IP_ADDRESS   = 'localhost'
 VNA_GPIB_ADDRESS = 20  # requires pyvisa, NI VISA
 
 

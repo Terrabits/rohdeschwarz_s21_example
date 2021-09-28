@@ -64,12 +64,11 @@ python .  # implies __main__.py
 You should see the following files in the `data/` folder:
 
 -   diagram1.png
+-   markers.csv
 -   scpi.log
 -   trc1-complex.csv
 -   trc1-formatted.csv
 
-Examples of each file can be found along with the initial commit release:
-
-[Release: initial-commit](https://github.com/Terrabits/rohdeschwarz_s21_example/releases/tag/initial-commit)
+Examples of each file can be found along with [the latest "release"](https://github.com/Terrabits/rohdeschwarz_s21_example/releases/):
 
 The output can be cleaned by running either `scripts/clean[.bat]`.

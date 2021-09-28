@@ -6,14 +6,14 @@ This is an example of how to use the VNA instrument driver from the  [rohdeschwa
 
 The general requirements for this project are:
 
-- Python `2.7+` or `3.4+`
-- `rohdeschwarz>=1.9.1.dev1`
+-   Python `2.7+` or `3.4+`
+-   `rohdeschwarz>=1.9.1.dev1`
 
 This example was tested with Python `3.9.5 x64` on macOS `11.5.2` Big Sur with the exact python packages and versions listed in [requirements.txt.lock](./requirements.txt.lock).
 
 ## Install
 
-Run the `scripts/install` bash script on Linux and macOS, or `scripts/install.bat` on Windows to install the required python packages.
+Run the `scripts/install` bash script on Linux and macOS, or `scripts\install.bat` on Windows to install the required python packages.
 
 ## Run
 
@@ -42,6 +42,11 @@ python .  # implies __main__.py
 
 ### Output
 
-You should see the following files in the `data` folder:
+You should see the following files in the `data/` folder:
 
-- 
+-   diagram1.png
+-   scpi.log
+-   trc1-complex.csv
+-   trc1-formatted.csv
+
+The output can be cleaned by running either `scripts/clean` or `scripts\clean.bat`, depending on your platform.

@@ -11,9 +11,18 @@ The general requirements for this project are:
 
 This example was tested with Python `3.9.5 x64` on macOS `11.5.2` Big Sur with the exact python packages and versions listed in [requirements.txt.lock](./requirements.txt.lock).
 
+## Clone Repository
+
+Assuming `git` is installed, you can clone the repository locally by executing the following:
+
+```shell
+cd path/for/clone
+git clone https://github.com/Terrabits/rohdeschwarz_s21_example.git
+```
+
 ## Scripts
 
-There are developer scripts for common actions in the `scripts/` folder.
+There are developer scripts for common actions in the [scripts/](./scripts) folder.
 
 For Windows users, run the `.bat` version of the desired script.
 
@@ -27,11 +36,11 @@ Run `scripts/install[.bat]` to install the required python packages.
 
 ### Configure Instrument Address
 
-Before the script can be run, you must first edit `VNA_IP_ADDRESS` and/or `VNA_GPIB_ADDRESS` in `__main__.py` to match the vna address:
+Before `__main__.py` can be run, you must first edit `VNA_IP_ADDRESS` or `VNA_GPIB_ADDRESS` to match your current configuration:
 
 ```python
 VNA_IP_ADDRESS   = 'localhost'
-VNA_GPIB_ADDRESS = 19  # requires PyVISA, NI VISA
+VNA_GPIB_ADDRESS = 20  # requires PyVISA, NI VISA
 ```
 
 As noted in the comment, GPIB control uses `PyVISA`, which requires installation and use of `NI VISA`.

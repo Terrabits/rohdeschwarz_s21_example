@@ -11,9 +11,17 @@ The general requirements for this project are:
 
 This example was tested with Python `3.9.5 x64` on macOS `11.5.2` Big Sur with the exact python packages and versions listed in [requirements.txt.lock](./requirements.txt.lock).
 
+## Scripts
+
+There are developer scripts for common actions in the `scripts/` folder.
+
+For Windows users, run the `.bat` version of the desired script.
+
+A bash version of each script is also provided for Bash users (e.g. macOS and Linux).
+
 ## Install
 
-Run the `scripts/install` bash script on Linux and macOS, or `scripts\install.bat` on Windows to install the required python packages.
+Run `scripts/install[.bat]` to install the required python packages.
 
 ## Run
 
@@ -33,7 +41,7 @@ See the [PyVISA Backend Installation](https://pyvisa.readthedocs.io/en/latest/in
 
 ### Execute
 
-To run the script from the command line:
+To execute, either run `scripts/start[.bat]` or execute the following from the command line:
 
 ```shell
 cd path/to/rohdeschwarz_s21_example
@@ -49,4 +57,4 @@ You should see the following files in the `data/` folder:
 -   trc1-complex.csv
 -   trc1-formatted.csv
 
-The output can be cleaned by running either `scripts/clean` or `scripts\clean.bat`, depending on your platform.
+The output can be cleaned by running either `scripts/clean[.bat]`.

@@ -1,6 +1,6 @@
-# `rohdeschwarz` S21 Example
+# `rohdeschwarz` Two Traces One Channel Example
 
-This is an example of how to use the VNA instrument driver from the  [rohdeschwarz](https://github.com/Terrabits/rohdeschwarz) Python package to measure S21 and capture all data.
+This is an example of how to use the VNA instrument driver from the  [rohdeschwarz](https://github.com/Terrabits/rohdeschwarz) Python package to measure S21 and S31 simultaneously, then capture all data.
 
 ## Requirements
 
@@ -9,7 +9,7 @@ The general requirements for this project are:
 -   Python `2.7+` or `3.4+`
 -   `rohdeschwarz>=1.9.1.dev1`
 
-This example was tested with Python `3.9.5 x64` on macOS `11.5.2` Big Sur with the exact python packages and versions listed in [requirements.txt.lock](./requirements.txt.lock).
+This example was tested with Python `3.9.7 x64` on macOS `11.6` (Big Sur) with the exact python packages and versions listed in [requirements.txt.lock](./requirements.txt.lock).
 
 ## Clone Repository
 
@@ -18,6 +18,8 @@ Assuming `git` is installed, you can clone the repository locally by executing t
 ```shell
 cd path/for/clone
 git clone https://github.com/Terrabits/rohdeschwarz_s21_example.git
+cd rohdeschwarz_s21_example
+git checkout with-two-traces-one-channel
 ```
 
 ## Scripts
@@ -66,9 +68,9 @@ You should see the following files in the `data/` folder:
 -   diagram1.png
 -   markers.csv
 -   scpi.log
--   trc1-complex.csv
--   trc1-formatted.csv
+-   Trc1-complex.csv
+-   Trc1-formatted.csv
+-   Trc2-complex.csv
+-   Trc2-formatted.csv
 
-Examples of each file can be found along with [the latest "release"](https://github.com/Terrabits/rohdeschwarz_s21_example/releases/):
-
-The output can be cleaned by running either `scripts/clean[.bat]`.
+The output can be cleaned by running `scripts/clean[.bat]`.

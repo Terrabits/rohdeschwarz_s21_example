@@ -13,8 +13,6 @@ root_path    = Path(__file__).parent.resolve()
 data_path    = root_path / 'data'
 vna_log_file = data_path / 'scpi.log'
 diagram_file = data_path / 'diagram1.png'
-formatted_trace_data_file = data_path / 'trc1-formatted.csv'
-complex_trace_data_file   = data_path / 'trc1-complex.csv'
 markers_file = data_path / 'markers.csv'
 
 data_path.mkdir(exist_ok=True)
@@ -52,29 +50,46 @@ channel.if_bandwidth_Hz    = 1e3
 channel.power_dBm          = -10
 assert not vna.errors
 
-# configure trace
-trace = vna.trace('Trc1')
-trace.parameter = 'S21'
-trace.format    = 'MLOG'
-trace.autoscale()
+# configure trace1 (Trc1)
+trace1 = vna.trace('Trc1')
+trace1.parameter = 'S21'
+trace1.format    = 'MLOG'
+trace1.autoscale()
 assert not vna.errors
 
-# configure markers
-trace.markers = [1, 2, 3]
-
-marker1 = trace.marker(1)
-marker1.x = 1e9
-
-marker2 = trace.marker(2)
-marker2.x = 2e9
-
-marker3 = trace.marker(3)
-marker3.x = 3e9
+# configure trace2 (Trc2)
+vna.create_trace('Trc2', channel=1)
+trace2           = vna.trace('Trc2')
+trace2.parameter = 'S31'
+trace2.format    = 'MLOG'
+trace2.diagram   = 1  # new traces are hidden by default
+trace2.autoscale()
+assert not vna.errors
 
 # configure diagram
 diagram = vna.diagram(1)
-diagram.title = 'S21 Magnitude (dB)'
+diagram.title = 'S21, S31 Magnitude (dB)'
 assert not vna.errors
+
+# configure same markers for each trace
+for trace_name in vna.traces:
+    trace = vna.trace(trace_name)
+
+    # create three markers
+    trace.markers = [1, 2, 3]
+
+    # marker 1 setup
+    m1 = trace.marker(1)
+    m1.x = 1e9
+
+    # marker 2 setup
+    m2 = trace.marker(2)
+    m2.x = 2e9
+
+    # marker 3 setup
+    m3 = trace.marker(3)
+    m3.x = 3e9
+    assert not vna.errors
 
 # perform one "manual" sweep
 vna.continuous_sweep = False
@@ -83,20 +98,36 @@ assert not vna.errors
 
 # save markers to csv
 with markers_file.open('w') as f:
-    # header
-    f.write('# name, x_Hz, y_dB\n')
+    # write csv header
+    f.write('# trace, marker, x_Hz, y_dB\n')
+    f.flush()
 
-    # data
+    # use csv writer for data
     csv_writer = csv.writer(f)
-    for m in trace.markers:
-        marker = trace.marker(m)
-        csv_writer.writerow([marker.name, marker.x, marker.y])
+
+    for trace_name in vna.traces:
+        trace = vna.trace(trace_name)
+
+        for index in trace.markers:
+            # write marker data to row
+            marker = trace.marker(index)
+            csv_writer.writerow([trace_name, marker.name, marker.x, marker.y])
+            f.flush()
+            assert not vna.errors
 
 # save trace data
-trace.save_data_locally(str(formatted_trace_data_file))
-trace.save_complex_data_locally(str(complex_trace_data_file))
-assert not vna.errors
+for trace_name in vna.traces:
+    trace = vna.trace(trace_name)
 
-# save diagram screenshot
+    # save magnitude dB
+    formatted_data_file = data_path / f'{trace_name}-formatted.csv'
+    trace.save_data_locally(str(formatted_data_file))
+
+    # save complex data
+    complex_data_file = data_path / f'{trace_name}-complex.csv'
+    trace.save_complex_data_locally(str(complex_data_file))
+    assert not vna.errors
+
+# save screenshot
 diagram.save_screenshot_locally(str(diagram_file), image_format='PNG')
 assert not vna.errors

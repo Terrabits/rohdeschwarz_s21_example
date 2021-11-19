@@ -1,6 +1,6 @@
 # `rohdeschwarz` S21 Example
 
-This is an example of how to use the VNA instrument driver from the  [rohdeschwarz](https://github.com/Terrabits/rohdeschwarz) Python package to measure S21 and capture all data.
+This is an example of how to use the VNA instrument driver from the  [rohdeschwarz](https://github.com/Terrabits/rohdeschwarz) Python package to measure antenna S21 vs frequency and position.
 
 ## Requirements
 
@@ -61,14 +61,63 @@ python .  # implies __main__.py
 
 ### Output
 
-You should see the following files in the `data/` folder:
+Progress (frequency, position) is printed to `stdout` as follows:
 
--   diagram1.png
--   markers.csv
--   scpi.log
--   trc1-complex.csv
--   trc1-formatted.csv
+```comment
+freq: 1000000000.0
+  position: 1
+  position: 2
+  position: 3
+  position: 4
+  position: 5
+freq: 2000000000.0
+  position: 1
+  position: 2
+  position: 3
+  position: 4
+  position: 5
+freq: 3000000000.0
+  position: 1
+  position: 2
+  position: 3
+  position: 4
+  position: 5
+freq: 4000000000.0
+  position: 1
+  position: 2
+  position: 3
+  position: 4
+  position: 5
+freq: 5000000000.0
+  position: 1
+  position: 2
+  position: 3
+  position: 4
+  position: 5
+freq: 6000000000.0
+  position: 1
+  position: 2
+  position: 3
+  position: 4
+  position: 5
+freq: 7000000000.0
+  position: 1
+  position: 2
+  position: 3
+  position: 4
+  position: 5
+freq: 8000000000.0
+  position: 1
+  position: 2
+  position: 3
+  position: 4
+  position: 5
+```
 
-Examples of each file can be found along with [the latest "release"](https://github.com/Terrabits/rohdeschwarz_s21_example/releases/):
+A csv file is also created in `data/data.csv`. The file format is:
 
-The output can be cleaned by running either `scripts/clean[.bat]`.
+```comment
+freq_Hz, position, mag(s21), phase_rad(s21)
+```
+
+The output can be cleaned by running `scripts/clean[.bat]`.

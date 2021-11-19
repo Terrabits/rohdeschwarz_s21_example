@@ -1,24 +1,24 @@
+from   cmath   import phase
 import csv
-from   pathlib                      import Path
+from   gimbal  import Gimbal
+from   pathlib import Path
 from   rohdeschwarz.instruments.vna import Vna
 
 
 # constants
-VNA_IP_ADDRESS   = 'localhost'
+VNA_IP_ADDRESS   = '192.168.86.199'
 VNA_GPIB_ADDRESS = 20  # requires pyvisa, NI VISA
-
+POSITIONS        = [1, 2, 3, 4, 5]
+FREQUENCIES_Hz   = [1e9, 2e9, 3e9, 4e9, 5e9, 6e9, 7e9, 8e9]
 
 # paths
-root_path    = Path(__file__).parent.resolve()
-data_path    = root_path / 'data'
-vna_log_file = data_path / 'scpi.log'
-diagram_file = data_path / 'diagram1.png'
-formatted_trace_data_file = data_path / 'trc1-formatted.csv'
-complex_trace_data_file   = data_path / 'trc1-complex.csv'
-markers_file = data_path / 'markers.csv'
-
+root_path = Path(__file__).parent.resolve()
+data_path = root_path / 'data'
 data_path.mkdir(exist_ok=True)
 
+# file paths
+log_file  = root_path / 'vna.log'
+data_file = root_path / 'data' / 'data.csv'
 
 # init vna connection
 vna = Vna()
@@ -28,7 +28,7 @@ vna.open_tcp(VNA_IP_ADDRESS)
 # vna.open('gpib', VNA_GPIB_ADDRESS)
 
 # log scpi and errors
-vna.open_log(str(vna_log_file))
+vna.open_log(str(log_file))
 
 # connected?
 if not vna.id_string():
@@ -43,60 +43,56 @@ vna.clear_status()
 #  - Traces:   ['Trc1']
 vna.preset()
 
-# configure channel
+# configure channel for CW
 channel = vna.channel(1)
-channel.start_frequency_Hz = 1e9
-channel.stop_frequency_Hz  = 8e9
-channel.points             = 201
-channel.if_bandwidth_Hz    = 1e3
-channel.power_dBm          = -10
+channel.sweep_type      = 'POIN'
+channel.points          = 1
+channel.if_bandwidth_Hz = 1e3
+channel.power_dBm       = -10
 assert not vna.errors
 
 # configure trace
 trace = vna.trace('Trc1')
 trace.parameter = 'S21'
-trace.format    = 'MLOG'
-trace.autoscale()
 assert not vna.errors
 
-# configure markers
-trace.markers = [1, 2, 3]
+# stop sweeping
+vna.manual_sweep = True
 
-marker1 = trace.marker(1)
-marker1.x = 1e9
+# init gimbal
+gimbal = Gimbal()
 
-marker2 = trace.marker(2)
-marker2.x = 2e9
+# perform CW sweeps
+data = []
+for freq_Hz in FREQUENCIES_Hz:
+    print(f'freq: {freq_Hz}')
+    # set CW frequency
+    channel.frequency_Hz = freq_Hz
 
-marker3 = trace.marker(3)
-marker3.x = 3e9
+    for position in POSITIONS:
+        print(f'  position: {position}')
 
-# configure diagram
-diagram = vna.diagram(1)
-diagram.title = 'S21 Magnitude (dB)'
-assert not vna.errors
+        # position gimbal
+        gimbal.position = position
+        gimbal.wait_for_position()
 
-# perform one "manual" sweep
-vna.continuous_sweep = False
-vna.sweep()
-assert not vna.errors
+        # scpi to start sweep
+        vna.start_sweeps()
 
-# save markers to csv
-with markers_file.open('w') as f:
-    # header
-    f.write('# name, x_Hz, y_dB\n')
+        # scpi to block until sweep end
+        vna.pause(timeout_ms=10_000)
 
-    # data
+        # retrieve complex data (re, im)
+        s21 = trace.y_complex[0]
+        data.append([freq_Hz, position, abs(s21), phase(s21)])
+
+# write csv
+with data_file.open('w') as f:
     csv_writer = csv.writer(f)
-    for m in trace.markers:
-        marker = trace.marker(m)
-        csv_writer.writerow([marker.name, marker.x, marker.y])
 
-# save trace data
-trace.save_data_locally(str(formatted_trace_data_file))
-trace.save_complex_data_locally(str(complex_trace_data_file))
-assert not vna.errors
+    # write header
+    header = ['freq_Hz', 'position', 'abs(s21)', 'phase_rad(s21)']
+    csv_writer.writerow(header)
 
-# save diagram screenshot
-diagram.save_screenshot_locally(str(diagram_file), image_format='PNG')
-assert not vna.errors
+    # write data
+    csv_writer.writerows(data)

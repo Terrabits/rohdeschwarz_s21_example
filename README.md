@@ -34,7 +34,7 @@ Run `scripts/install[.bat]` to install the required python packages.
 
 ## Run
 
-The entry point for execution is [__main__.py](./__main__.py).
+The entry point for execution is [`__main__.py`](./__main__.py).
 
 ### Configure Instrument Address
 

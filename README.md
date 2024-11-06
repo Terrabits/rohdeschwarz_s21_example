@@ -1,6 +1,6 @@
 # `rohdeschwarz` S21 Example
 
-This is an example of how to use the VNA instrument driver from the  [rohdeschwarz](https://github.com/Terrabits/rohdeschwarz) Python package to measure S21 and capture all data.
+This is an example of how to use the VNA instrument driver from the  [rohdeschwarz](https://github.com/Terrabits/rohdeschwarz) Python package to configure a measurement for S21, calibrate with an automatic cal unit (optional) and capture all data.
 
 ## Requirements
 

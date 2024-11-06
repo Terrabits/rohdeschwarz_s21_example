@@ -76,6 +76,14 @@ diagram = vna.diagram(1)
 diagram.title = 'S21 Magnitude (dB)'
 assert not vna.errors
 
+# perform automatic calibration?
+if len(vna.cal_units) == 1:
+    choice = input('Calibrate? [y/N]').lower()
+    if choice == 'y' or choice == 'yes':
+        input('Connect Cal Unit to VNA ports 1 and 2.\nPress Enter to continue...')
+        channel.auto_calibrate(ports=[1, 2])
+        input('Connect DUT to ports 1 and 2.\nPress Enter to continue...')
+
 # perform one "manual" sweep
 vna.continuous_sweep = False
 vna.sweep()

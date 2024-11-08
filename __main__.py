@@ -56,7 +56,6 @@ assert not vna.errors
 trace = vna.trace('Trc1')
 trace.parameter = 'S21'
 trace.format    = 'MLOG'
-trace.autoscale()
 assert not vna.errors
 
 # configure markers
@@ -88,6 +87,9 @@ if len(vna.cal_units) == 1:
 vna.continuous_sweep = False
 vna.sweep()
 assert not vna.errors
+
+# auto scale display with measured data
+trace.autoscale()
 
 # save markers to csv
 with markers_file.open('w') as f:
